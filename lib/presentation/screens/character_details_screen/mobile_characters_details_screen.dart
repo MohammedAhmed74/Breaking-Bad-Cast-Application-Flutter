@@ -1,18 +1,22 @@
 import 'dart:math';
 
 import 'package:animated_text_kit/animated_text_kit.dart';
-import '../../business_logic/cubit/characters_cubit.dart';
-import '../../constants/my_colors.dart';
-import '../../data/models/character_model.dart';
-import '../../data/models/quote_model.dart';
-import '../../data/repository/characters_repo.dart';
-import '../../data/web_services/characters_services.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import '../../../business_logic/cubit/characters_cubit.dart';
+import '../../../constants/my_colors.dart';
+import '../../../data/models/character_model.dart';
+import '../../../data/models/quote_model.dart';
+import '../../../data/repository/characters_repo.dart';
+import '../../../data/web_services/characters_services.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class CharacterDetailsScreen extends StatelessWidget {
+class MobileCharacterDetailsScreen extends StatelessWidget {
   final Character character;
-  CharacterDetailsScreen({super.key, required this.character});
+  MobileCharacterDetailsScreen({
+    super.key,
+    required this.character,
+  });
   late Map actorInfo = {
     'Job': character.jobs,
     'Appeared in': character.categoryForTwoSeries,
@@ -48,6 +52,9 @@ class CharacterDetailsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     var charactersServices = CharactersServices();
     var charactersRepository = CharactersRepository(charactersServices);
+
+    double deviceWidth = MediaQuery.of(context).size.width;
+    double deviceHight = MediaQuery.of(context).size.height;
     return BlocProvider(
       create: (context) => CharactersCubit(charactersRepository),
       child: Builder(builder: (context) {
@@ -64,8 +71,11 @@ class CharacterDetailsScreen extends StatelessWidget {
                   SliverList(
                       delegate: state is QuotesLoadedState
                           ? SliverChildListDelegate(buildSliverDelegateList(
-                              quoteWidget: buildCharacterQuote(state.quotes)))
-                          : SliverChildListDelegate(buildSliverDelegateList())),
+                              quoteWidget: buildCharacterQuote(state.quotes),
+                              deviceWidth: deviceWidth))
+                          : SliverChildListDelegate(
+                              buildSliverDelegateList(deviceWidth: deviceWidth),
+                            )),
                 ],
               );
             },
@@ -82,7 +92,7 @@ class CharacterDetailsScreen extends StatelessWidget {
       backgroundColor: MyColors.myGrey,
       pinned: true,
       stretch: true,
-      expandedHeight: 600,
+      expandedHeight: 600.sp,
       flexibleSpace: FlexibleSpaceBar(
         title: Text(
           character.nickName,
@@ -99,25 +109,26 @@ class CharacterDetailsScreen extends StatelessWidget {
     );
   }
 
-  List<Widget> buildSliverDelegateList({Widget? quoteWidget}) {
+  List<Widget> buildSliverDelegateList(
+      {Widget? quoteWidget, required double deviceWidth}) {
     List<Widget> sliverDelegateList = [
-      const SizedBox(
-        height: 20,
+      SizedBox(
+        height: 20.sp,
       ),
     ];
     actorInfo.forEach((key, value) {
       if (value != null && value != '') {
         sliverDelegateList.add(buildSliverDelegateItem(key, value));
-        sliverDelegateList.add(
-            buildDivider(key.toString().length * 13, key.toString().length));
+        sliverDelegateList.add(buildDivider(
+            key.toString().length * 13, key.toString().length, deviceWidth));
       }
     });
     sliverDelegateList.add(Container(
-      height: 40,
+      height: 40.sp,
     ));
     sliverDelegateList.add(Center(child: quoteWidget ?? Container()));
     sliverDelegateList.add(Container(
-      height: 400,
+      height: 400.sp,
     ));
     return sliverDelegateList;
   }
@@ -137,8 +148,8 @@ class CharacterDetailsScreen extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 10),
             child: DefaultTextStyle(
               textAlign: TextAlign.center,
-              style: const TextStyle(
-                fontSize: 22.0,
+              style: TextStyle(
+                fontSize: 18.sp,
                 fontFamily: 'Agne',
                 color: MyColors.myYellow,
                 fontWeight: FontWeight.bold,
@@ -166,9 +177,9 @@ class CharacterDetailsScreen extends StatelessWidget {
         children: [
           Text(
             '$title : ',
-            style: const TextStyle(
+            style: TextStyle(
                 color: MyColors.myWhite,
-                fontSize: 16,
+                fontSize: 16.sp,
                 fontWeight: FontWeight.w600),
           ),
           Expanded(
@@ -176,9 +187,9 @@ class CharacterDetailsScreen extends StatelessWidget {
               value,
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
-              style: const TextStyle(
-                  color: Color.fromARGB(255, 176, 176, 176),
-                  fontSize: 14,
+              style: TextStyle(
+                  color: const Color.fromARGB(255, 176, 176, 176),
+                  fontSize: 14.sp,
                   fontWeight: FontWeight.w400),
             ),
           )
@@ -187,14 +198,14 @@ class CharacterDetailsScreen extends StatelessWidget {
     );
   }
 
-  Widget buildDivider(double width, int titleLength) {
+  Widget buildDivider(double width, int titleLength, double deviceWidth) {
     if (width > 150) {
       width = titleLength * 11;
     }
     return Padding(
-      padding: EdgeInsets.only(bottom: 15, right: 400 - width, left: 10),
+      padding: EdgeInsets.only(right: deviceWidth - width, left: 10),
       child: Container(
-        height: 2,
+        height: 0.8.sp,
         color: MyColors.myYellow,
       ),
     );

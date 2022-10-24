@@ -1,22 +1,22 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_offline/flutter_offline.dart';
 
-import '../../business_logic/cubit/characters_cubit.dart';
-import '../../constants/my_colors.dart';
-import '../../data/models/character_model.dart';
-import '../widgets/character_item.dart';
-import 'no_internet_screen.dart';
+import '../../../business_logic/cubit/characters_cubit.dart';
+import '../../../constants/my_colors.dart';
+import '../../../data/models/character_model.dart';
+import '../../widgets/character_item.dart';
+import '../no_internet_screen.dart';
 
-class CharactersScreen extends StatefulWidget {
-  const CharactersScreen({Key? key}) : super(key: key);
+class DisctopCharactersScreen extends StatefulWidget {
+  const DisctopCharactersScreen({Key? key}) : super(key: key);
 
   @override
-  State<CharactersScreen> createState() => _CharactersScreenState();
+  State<DisctopCharactersScreen> createState() =>
+      _DisctopCharactersScreenState();
 }
 
-class _CharactersScreenState extends State<CharactersScreen> {
+class _DisctopCharactersScreenState extends State<DisctopCharactersScreen> {
   List<Character> allCharacters = [];
   List<Character> wantedCharacters = [];
   bool? isSearching;
@@ -40,6 +40,8 @@ class _CharactersScreenState extends State<CharactersScreen> {
 //****************************     Builder     **********************************
   @override
   Widget build(BuildContext context) {
+    double deviceWidth = MediaQuery.of(context).size.width;
+    double deviceHight = MediaQuery.of(context).size.height;
     return BlocBuilder<CharactersCubit, CharactersStates>(
         builder: (context, state) {
       if (state is CharactersLoadedState) {
@@ -58,7 +60,7 @@ class _CharactersScreenState extends State<CharactersScreen> {
               return const NoInternetScreen();
             }
             return allCharacters.isNotEmpty
-                ? buildCharactersList()
+                ? buildCharactersList(deviceWidth, deviceHight)
                 : buildLoadingWidget();
           },
           child: buildLoadingWidget(),
@@ -69,7 +71,7 @@ class _CharactersScreenState extends State<CharactersScreen> {
 
 //**************************** UI functions *************************************
 
-  Widget buildCharactersList() {
+  Widget buildCharactersList(double screenWidth, double screenHight) {
     // character's name doesn't exist
     if (searchCtrl.text.isNotEmpty && wantedCharacters.isEmpty) {
       return Container(
@@ -90,25 +92,28 @@ class _CharactersScreenState extends State<CharactersScreen> {
     return Container(
       color: MyColors.myGrey,
       padding: const EdgeInsets.only(top: 10),
-      child: GridView.builder(
-        physics: const BouncingScrollPhysics(),
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2,
-          childAspectRatio: 2 / 3,
-          crossAxisSpacing: 1,
-          mainAxisSpacing: 1,
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(30, 30, 30, 0),
+        child: GridView.builder(
+          physics: const BouncingScrollPhysics(),
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: (screenWidth / 250).round(),
+            childAspectRatio: 2 / 3,
+            crossAxisSpacing: 2,
+            mainAxisSpacing: 2,
+          ),
+          itemBuilder: (context, index) =>
+              searchCtrl.text.isEmpty && wantedCharacters.isEmpty
+                  ? CharacterItem(
+                      character: allCharacters[
+                          index]) // presentation/widgets/CharacterItem
+                  : CharacterItem(
+                      character: wantedCharacters[
+                          index]), // presentation/widgets/CharacterItem
+          itemCount: wantedCharacters.isEmpty
+              ? allCharacters.length
+              : wantedCharacters.length,
         ),
-        itemBuilder: (context, index) => searchCtrl.text.isEmpty &&
-                wantedCharacters.isEmpty
-            ? CharacterItem(
-                character:
-                    allCharacters[index]) // presentation/widgets/CharacterItem
-            : CharacterItem(
-                character: wantedCharacters[
-                    index]), // presentation/widgets/CharacterItem
-        itemCount: wantedCharacters.isEmpty
-            ? allCharacters.length
-            : wantedCharacters.length,
       ),
     );
   }

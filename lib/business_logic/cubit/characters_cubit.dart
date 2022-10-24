@@ -19,10 +19,14 @@ class CharactersCubit extends Cubit<CharactersStates> {
   }
 
   void getQuotesByCharacterName(String charName) {
-    charactersRepository.getQuotesByCharacterName(charName).then((quotes) {
-      if (quotes.isNotEmpty) {
-        emit(QuotesLoadedState(quotes));
-      }
-    });
+    try {
+      charactersRepository.getQuotesByCharacterName(charName).then((quotes) {
+        if (quotes.isNotEmpty) {
+          emit(QuotesLoadedState(quotes));
+        }
+      });
+    } catch (error) {
+      print(error);
+    }
   }
 }

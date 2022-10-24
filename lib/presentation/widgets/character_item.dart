@@ -1,6 +1,7 @@
+import 'package:breaking_bad_cast/presentation/screens/character_details_screen/responsive_character_details_screen.dart';
+
 import '../../constants/my_colors.dart';
 import '../../data/models/character_model.dart';
-import '../screens/characters_details_screen.dart';
 import 'package:flutter/material.dart';
 
 class CharacterItem extends StatelessWidget {
@@ -23,7 +24,7 @@ class CharacterItem extends StatelessWidget {
             context,
             MaterialPageRoute(
               builder: (context) =>
-                  CharacterDetailsScreen(character: character),
+                  ResponsiveCharacterDetailsScreen(character: character),
             ));
       },
       child: Container(

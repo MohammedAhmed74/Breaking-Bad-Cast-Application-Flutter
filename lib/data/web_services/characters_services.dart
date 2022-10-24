@@ -1,4 +1,3 @@
-
 import 'package:dio/dio.dart';
 import '../../constants/const_strings.dart';
 
@@ -9,8 +8,8 @@ class CharactersServices {
     BaseOptions options = BaseOptions(
       baseUrl: baseUrl,
       receiveDataWhenStatusError: true,
-      connectTimeout: 20 * 1000, //20s
-      receiveTimeout: 20 * 1000, //20s
+      connectTimeout: 90 * 1000, //90s
+      receiveTimeout: 90 * 1000, //20s
     );
     dio = Dio(options);
   }
@@ -24,9 +23,10 @@ class CharactersServices {
     }
   }
 
-    Future<List<dynamic>> getQuotesByCharacterName(String charName) async {
+  Future<List<dynamic>> getQuotesByCharacterName(String charName) async {
     try {
-      Response response = await dio.get(quotesEndPoint, queryParameters: {'author' : charName});
+      Response response =
+          await dio.get(quotesEndPoint, queryParameters: {'author': charName});
       return response.data;
     } catch (error) {
       return [];
