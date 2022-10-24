@@ -4,7 +4,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'business_logic/cubit/characters_cubit.dart';
 import 'data/repository/characters_repo.dart';
 import 'data/web_services/characters_services.dart';
-import 'presentation/screens/characters_screen/mobile_characters_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

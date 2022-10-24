@@ -12,10 +12,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class MobileCharacterDetailsScreen extends StatelessWidget {
-  final Character character;
+  
+  List<Character> characters;
+  int characterIndex;
+  late Character character = characters[characterIndex];
   MobileCharacterDetailsScreen({
     super.key,
-    required this.character,
+    required this.characters,
+    required this.characterIndex
   });
   late Map actorInfo = {
     'Job': character.jobs,
@@ -54,7 +58,6 @@ class MobileCharacterDetailsScreen extends StatelessWidget {
     var charactersRepository = CharactersRepository(charactersServices);
 
     double deviceWidth = MediaQuery.of(context).size.width;
-    double deviceHight = MediaQuery.of(context).size.height;
     return BlocProvider(
       create: (context) => CharactersCubit(charactersRepository),
       child: Builder(builder: (context) {

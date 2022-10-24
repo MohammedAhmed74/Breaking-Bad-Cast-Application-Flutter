@@ -1,6 +1,5 @@
 part of 'characters_cubit.dart';
 
-@immutable
 abstract class CharactersStates {}
 
 class CharactersInitialState extends CharactersStates {}

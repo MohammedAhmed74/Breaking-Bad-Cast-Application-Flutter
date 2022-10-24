@@ -100,11 +100,10 @@ class _MobileCharactersScreenState extends State<MobileCharactersScreen> {
         itemBuilder: (context, index) => searchCtrl.text.isEmpty &&
                 wantedCharacters.isEmpty
             ? CharacterItem(
-                character:
-                    allCharacters[index]) // presentation/widgets/CharacterItem
+                characters:
+                    allCharacters, characretIndex: index,) // presentation/widgets/CharacterItem
             : CharacterItem(
-                character: wantedCharacters[
-                    index]), // presentation/widgets/CharacterItem
+                characters: wantedCharacters, characretIndex: index), // presentation/widgets/CharacterItem
         itemCount: wantedCharacters.isEmpty
             ? allCharacters.length
             : wantedCharacters.length,

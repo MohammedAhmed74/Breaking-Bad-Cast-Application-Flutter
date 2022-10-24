@@ -5,9 +5,12 @@ import '../../data/models/character_model.dart';
 import 'package:flutter/material.dart';
 
 class CharacterItem extends StatelessWidget {
-  CharacterItem({Key? key, required this.character}) : super(key: key);
-  Character character;
-
+  CharacterItem(
+      {Key? key, required this.characters, required this.characretIndex})
+      : super(key: key);
+  List<Character> characters;
+  int characretIndex;
+  late Character character = characters[characretIndex];
   @override
   Widget build(BuildContext context) {
     // HTTP request failed, statusCode: 502, can't be catched !!
@@ -24,7 +27,7 @@ class CharacterItem extends StatelessWidget {
             context,
             MaterialPageRoute(
               builder: (context) =>
-                  ResponsiveCharacterDetailsScreen(character: character),
+                  ResponsiveCharacterDetailsScreen(characters: characters, characterIndex: characretIndex),
             ));
       },
       child: Container(
