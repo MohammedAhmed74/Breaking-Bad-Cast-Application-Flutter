@@ -9,8 +9,8 @@ class ResponsiveCharacterDetailsScreen extends StatelessWidget {
   ResponsiveCharacterDetailsScreen(
       {Key? key, required this.characters, required this.characterIndex})
       : super(key: key);
-  List<Character> characters;
-  int characterIndex;
+  final List<Character> characters;
+  final int characterIndex;
   late Character character = characters[characterIndex];
 
   @override

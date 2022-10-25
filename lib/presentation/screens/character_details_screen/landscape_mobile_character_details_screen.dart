@@ -13,8 +13,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class LandscapeMobileCharacterDetailsScreen extends StatefulWidget {
-  List<Character> characters;
-  int characterIndex;
+  final List<Character> characters;
+  final int characterIndex;
 
   LandscapeMobileCharacterDetailsScreen(
       {super.key, required this.characters, required this.characterIndex});
