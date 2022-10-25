@@ -45,40 +45,6 @@ class _DisctopCharacterDetailsScreenState
     return actorInfo;
   }
 
-  List<Widget> getCharacterInfo(
-      {List<Quote>? quotes, required Character char}) {
-    final List<Widget> charInformations = [
-      Text(
-        character.nickName,
-        style: TextStyle(
-          color: MyColors.myYellow,
-          fontSize: 26.sp,
-          fontWeight: FontWeight.w700,
-        ),
-      ),
-      SizedBox(
-        height: 25.sp,
-      ),
-    ];
-    Map actorInfo = fillActorInformations(char);
-    actorInfo.forEach((key, value) {
-      if (value != null && value != '') {
-        charInformations.add(buildSingleInformation(key, value));
-        charInformations.add(
-            buildDivider(key.toString().length * 13, key.toString().length));
-      }
-    });
-    if (quotes != null) {
-      charInformations.add(
-        SizedBox(
-          height: 50.sp,
-        ),
-      );
-      charInformations.add(buildCharacterQuote(quotes));
-    }
-    return charInformations;
-  }
-
   late int currentIndex;
   @override
   void initState() {
@@ -195,6 +161,45 @@ class _DisctopCharacterDetailsScreenState
   }
 
 //**************************** UI functions *************************************
+
+  List<Widget> getCharacterInfo(
+      {List<Quote>? quotes, required Character char}) {
+        // charInformations always starts with character's nick name
+    final List<Widget> charInformations = [
+      Text(
+        character.nickName,
+        style: TextStyle(
+          color: MyColors.myYellow,
+          fontSize: 26.sp,
+          fontWeight: FontWeight.w700,
+        ),
+      ),
+      SizedBox(
+        height: 25.sp,
+      ),
+    ];
+    // filling actorInfo with all required informations
+    Map actorInfo = fillActorInformations(char);
+    // filtering null informations
+    actorInfo.forEach((key, value) {
+      if (value != null && value != '') {
+        charInformations.add(buildSingleInformation(key, value));
+        charInformations.add(
+            buildDivider(key.toString().length * 13, key.toString().length));
+      }
+    });
+    // checking if quote exist
+    if (quotes != null) {
+      charInformations.add(
+        SizedBox(
+          height: 50.sp,
+        ),
+      );
+      charInformations.add(buildCharacterQuote(quotes));
+    }
+    return charInformations;
+  }
+
   Widget buildCharacterQuote(List<Quote>? qoutes) {
     int randomIndex = 0;
     if (qoutes!.length > 1) {

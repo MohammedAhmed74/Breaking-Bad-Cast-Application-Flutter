@@ -35,7 +35,7 @@ class MobileCharacterDetailsScreen extends StatelessWidget {
     return Random().nextInt(qoutesLength - 1);
   }
 
-  // Spliting the quote to appeare in 3 levels
+  // Spliting the quote 3 levels
   // List<String> getQuoteAfterSplit(Quote quote) {
   //   print(quote.text);
   //   List<String> quoteAfterSplit = quote.text.split(' ');
@@ -90,6 +90,32 @@ class MobileCharacterDetailsScreen extends StatelessWidget {
 
 //**************************** UI functions *************************************
 
+
+  List<Widget> buildSliverDelegateList(
+      {Widget? quoteWidget, required double deviceWidth}) {
+    List<Widget> sliverDelegateList = [
+      SizedBox(
+        height: 20.sp,
+      ),
+    ];
+    // filling actorInfo with all required informations
+    actorInfo.forEach((key, value) {
+      if (value != null && value != '') {
+        sliverDelegateList.add(buildSliverDelegateItem(key, value));
+        sliverDelegateList.add(buildDivider(
+            key.toString().length * 13, key.toString().length, deviceWidth));
+      }
+    });
+    sliverDelegateList.add(Container(
+      height: 40.sp,
+    ));
+    sliverDelegateList.add(Center(child: quoteWidget ?? Container()));
+    sliverDelegateList.add(Container(
+      height: 400.sp,
+    ));
+    return sliverDelegateList;
+  }
+
   Widget buildSliverAppBar() {
     return SliverAppBar(
       backgroundColor: MyColors.myGrey,
@@ -110,30 +136,6 @@ class MobileCharacterDetailsScreen extends StatelessWidget {
         ),
       ),
     );
-  }
-
-  List<Widget> buildSliverDelegateList(
-      {Widget? quoteWidget, required double deviceWidth}) {
-    List<Widget> sliverDelegateList = [
-      SizedBox(
-        height: 20.sp,
-      ),
-    ];
-    actorInfo.forEach((key, value) {
-      if (value != null && value != '') {
-        sliverDelegateList.add(buildSliverDelegateItem(key, value));
-        sliverDelegateList.add(buildDivider(
-            key.toString().length * 13, key.toString().length, deviceWidth));
-      }
-    });
-    sliverDelegateList.add(Container(
-      height: 40.sp,
-    ));
-    sliverDelegateList.add(Center(child: quoteWidget ?? Container()));
-    sliverDelegateList.add(Container(
-      height: 400.sp,
-    ));
-    return sliverDelegateList;
   }
 
   Widget buildCharacterQuote(List<Quote>? qoutes) {
